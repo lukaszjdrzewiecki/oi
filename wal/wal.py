@@ -1,22 +1,19 @@
 # This is a sample Python script.
 
-# Press ⌃R to execute it or replace it with your code.
-# Press Double ⇧ to search everywhere for classes, files, tool windows, actions, and settings.
-def can_eliminate_all(n, robots):
-    # Znajdujemy robota z najmniejszą siłą
-    min_strength_robot = min(robots, key=lambda x: x[0])
-    # Sprawdzamy, czy ma on najwyższą zwinność
-    max_agility = max(robot[1] for robot in robots)
+n = int(input())
+robots = []
+for i in range(n):
+    s, z = map(int, input().split())
+    robots.append((s, z, i))
 
-    if min_strength_robot[1] == max_agility:
-        return "TAK"
-    else:
-        return "NIE"
+# Znajdź robota z maksymalną siłą
+max_s_robot = max(robots, key=lambda x: x[0])
+# Znajdź robota z maksymalną zwinnością
+max_z_robot = max(robots, key=lambda x: x[1])
 
-
-n = int(input().strip())
-robots = [tuple(map(int, input().split())) for _ in range(n)]
-
-# Wyświetlenie wyniku
-print(can_eliminate_all(n, robots))
+# Sprawdź, czy to ten sam robot
+if max_s_robot[2] == max_z_robot[2]:
+    print("NIE")
+else:
+    print("TAK")
 
