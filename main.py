@@ -2,10 +2,10 @@ import subprocess
 import glob
 
 
-def test(dir, program_file):
-    input_dir = dir + "in/"
-    output_dir = dir + "out/"
-    print(f'---TEST START: {dir}{program_file}')
+def test(program_dir, program_file, given_dir, expected_dir):
+    input_dir = program_dir + given_dir
+    output_dir = program_dir + expected_dir
+    print(f'---TEST START: {program_dir}{program_file}')
 
     # Przechodzimy przez każdy plik .in w katalogu in
     for input_file in glob.glob(input_dir + "*.in"):
@@ -23,7 +23,10 @@ def test(dir, program_file):
         # print(f'Running wal.py with input file: {input_file}')
         with open(input_file, "r") as file_input:
             # Uruchamiamy wal.py i przechwytujemy wyjście
-            result = subprocess.run(["python", dir + program_file], stdin=file_input, capture_output=True, text=True)
+            result = subprocess.run(["python", program_dir + program_file], stdin=file_input, capture_output=True, text=True)
+            if result.stderr is not None and result.stderr != "":
+                #print(f'ERROR file: {input_file}', result.stderr)
+                continue
             program_output = result.stdout.strip()
 
             # Porównujemy uzyskane wyjście z oczekiwanym i drukujemy oba wyniki w odpowiednim formacie
@@ -31,6 +34,8 @@ def test(dir, program_file):
             if program_output == expected_output:
                 result = "GOOD"
             print(f'{result}, file: {input_file}, expected: {expected_output}, given: {program_output}')
+            if result == "NOT GOOD":
+                return
     print('---TEST END---')
 
 
@@ -41,4 +46,4 @@ def print_hi(name):
 
 # Press the green button in the gutter to run the script.
 if __name__ == '__main__':
-    test('wal/', 'wal.py')
+    test('wal/', 'wal.py', "in/", "out/")
