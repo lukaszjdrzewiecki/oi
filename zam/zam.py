@@ -1,90 +1,34 @@
-import math
-import time
 import sys
 
-sys.set_int_max_str_digits(10_000_000)
-
-
-def minimal_button_presses_new(n):
-    # IF N IS 1
-    if n == "1":
-        return 0
-
-    # GET DIGITS
-    digits = len(n)
-
-    # IF 2 <= N <= 9
-    if digits == 1:
-        return (10 - int(n)) + 1
-
-    nearest_10 = 10 ** digits
-
-    n_int = int(n)
-
-    iterations = 0
-
-    while True:
-        if (val := nearest_10 - n_int) <= 9:
-            return iterations + val + 1
-
-        if n_int == 1:
-            return iterations
-
-        if n[0] > n[-1]:
-            n = n[1:] + n[0]
-            n_int = int(n)
-            iterations += 1
-            continue
-
-        n_int += 1
-        n = str(n_int)
-        iterations += 1
+sys.set_int_max_str_digits(1_000_000_000)
 
 
 def minimal_button_presses(n):
-    # IF N IS 1
-    if n == "1":
-        return 0
+    queue = [(n, 0)]
+    visited_set = {n}
 
-    iterations = 0
+    index = 0
+    while index < len(queue):
 
-    if n[-1] == '0':
-        n = n[1:] + n[0]
-        iterations += 1
+        current, presses = queue[index]
+        index += 1
 
-    # GET DIGITS
-    digits = len(n)
+        if current == 1:
+            return presses
 
-    # IF 2 <= N <= 9
-    if digits == 1:
-        return (10 - int(n)) + 1
+        next_num = current + 1
+        if next_num not in visited_set:
+            visited_set.add(next_num)
+            queue.append((next_num, presses + 1))
 
-    nearest_10 = 10 ** digits
-
-    numbers = [n]
-
-    while True:
-        numbers_tmp = []
-        for number in numbers:
-            n_int = int(number)
-            if (val := nearest_10 - n_int) <= 9:
-                return iterations + val + 1
-
-            if n_int == 1:
-                return iterations
-
-            numbers_tmp.extend([
-                str(n_int + 1), number[1:] + number[0]
-            ])
-
-        numbers = numbers_tmp
-        iterations += 1
+        current_str = str(current)
+        if len(current_str) > 1:
+            rotated_num = int(current_str[1:] + current_str[0])
+            if rotated_num not in visited_set:
+                visited_set.add(rotated_num)
+                queue.append((rotated_num, presses + 1))
 
 
-if __name__ == "__main__":
-    n = input().strip()
+n = int(input().strip())
 
-    # start = time.time()
-    # print(minimal_button_presses_new(n))
-    print(minimal_button_presses(n))
-    # print(time.time()-start)
+print(minimal_button_presses(n))
