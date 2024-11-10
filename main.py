@@ -24,20 +24,15 @@ def test(program_dir, program_file, given_dir, expected_dir):
         # print(f'Running wal.py with input file: {input_file}')
         with open(input_file, "r") as file_input:
             # Uruchamiamy wal.py i przechwytujemy wyjście
-            start = time.time()
             result = subprocess.run(["python", program_dir + program_file], stdin=file_input, capture_output=True, text=True)
-            prociessing_time = time.time() - start
-            if result.stderr is not None and result.stderr != "":
-                #print(f'ERROR file: {input_file}', result.stderr)
-                continue
             program_output = result.stdout.strip()
 
             # Porównujemy uzyskane wyjście z oczekiwanym i drukujemy oba wyniki w odpowiednim formacie
             result = "NOT GOOD"
             if program_output == expected_output:
                 result = "GOOD"
-            #print(f'{result}, file: {input_file}, expected: {expected_output}, given: {program_output.}')
-            print(f'{result}, file: {input_file}, processing_time: {prociessing_time}')
+            print(f'{result}, file: {input_file}, expected: {expected_output}, given: {program_output}')
+            #print(f'{result}, file: {input_file}')
             #if result == "NOT GOOD":
             #    return
     print('---TEST END---')
@@ -50,10 +45,7 @@ def print_hi(name):
 
 # Press the green button in the gutter to run the script.
 if __name__ == '__main__':
-    # test('wal/', 'wal.py', "in/", "out/")
+    test('wal/', 'wal.py', "in/", "out/")
     #test('spr/', 'spr.py', "in/", "out/")
-
-    start = time.time()
     test('zam/', 'zam.py', "in/", "out/")
-    print(time.time()-start)
 

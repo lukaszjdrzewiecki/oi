@@ -46,6 +46,12 @@ def minimal_button_presses(n):
     if n == "1":
         return 0
 
+    iterations = 0
+
+    if n[-1] == '0':
+        n = n[1:] + n[0]
+        iterations += 1
+
     # GET DIGITS
     digits = len(n)
 
@@ -56,8 +62,6 @@ def minimal_button_presses(n):
     nearest_10 = 10 ** digits
 
     numbers = [n]
-
-    iterations = 0
 
     while True:
         numbers_tmp = []
@@ -82,5 +86,5 @@ if __name__ == "__main__":
 
     # start = time.time()
     # print(minimal_button_presses_new(n))
-    print(minimal_button_presses_new(n))
+    print(minimal_button_presses(n))
     # print(time.time()-start)
