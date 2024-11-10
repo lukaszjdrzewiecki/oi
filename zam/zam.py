@@ -4,6 +4,7 @@ import sys
 
 sys.set_int_max_str_digits(10_000_000)
 
+
 def minimal_button_presses_new(n):
     # IF N IS 1
     if n == "1":
@@ -81,5 +82,5 @@ if __name__ == "__main__":
 
     # start = time.time()
     # print(minimal_button_presses_new(n))
-    print(minimal_button_presses(n))
+    print(minimal_button_presses_new(n))
     # print(time.time()-start)
